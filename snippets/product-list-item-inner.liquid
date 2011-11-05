@@ -1,0 +1,37 @@
+{% if settings.image_product_sale_enabled == true and product-list-item-inner.compare_at_price_max > product-list-item-inner.price %}
+<a class="saleflag" href="{{ product-list-item-inner.url }}"><img src="{{ 'sale_plush.png' | asset_url }}" alt="Sale" /></a>
+{% endif %}
+<a class="imagecontainer" href="{{ product-list-item-inner.url }}">
+{% if settings.thumb_roll_enabled == true %}
+{% for image in product-list-item-inner.images limit: 2 %}
+<img class="img{{ forloop.index }}" src="{{ image | product_img_url: 'large' }}" width="205" alt="{{ product-list-item-inner.title }}" />
+{% endfor %}
+{% else %}
+<img src="{{ product-list-item-inner.images.first | product_img_url: 'large' }}" width="205" alt="{{ product-list-item-inner.title }}" />
+{% endif %}
+</a>
+<div class="title"><a href="{{ product-list-item-inner.url }}">{{ product-list-item-inner.title }}</a></div>
+{% if settings.thumb_desc_enabled == true %}
+<div class="desc"><a href="{{ product-list-item-inner.url }}">{{ product-list-item-inner.description | strip_html | truncate: 65 | replace: '<','&lt;' | replace: '>','&gt;' }}</a></div>
+{% endif %}
+<div class="foot">
+    <div class="price">
+		{% if product-list-item-inner.compare_at_price_max > product-list-item-inner.price %}<span class="reducedfrom">{{ product-list-item-inner.compare_at_price_max | money }}</span>{% endif %}
+		<span class="amount">{% if product.price_varies %}<span class="from">From </span>{% endif %}{{ product-list-item-inner.price | money }}</span>
+	</div>
+
+	{% if settings.enable_quick_purchase == true and product-list-item-inner.variants.size == 1 && product-list-item-inner.available %}
+	<form action="/cart/add" method="post">
+        <div class="buttoncont">
+		{% for variant in product-list-item-inner.variants limit:1 %}
+		    <input type="hidden" name="id" value="{{ variant.id }}" />
+		{% endfor %}
+    		<input class="addbutton" type="submit" name="add" value="{{ settings.text_purchase }}" id="purchase" />
+        </div>
+	</form>
+	{% else %}
+    <div class="buttoncont">
+	    <a href="{{ product-list-item-inner.url }}">{{ settings.text_more_details }}</a>
+    </div>
+	{% endif %}
+</div>

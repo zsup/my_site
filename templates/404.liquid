@@ -1,0 +1,19 @@
+{% comment %}NOTE: If there are specific nonexistent URLs which your visitors are likely to request on a regular basis (maybe due to old links from elsewhere on the web), you can set up URL redirection by clicking on your Navigation tab and following the link in the sidebar.{% endcomment %}
+
+<div id="content" class="hasaside">
+    <div class="pagecontent">
+        <h1>{{ settings.text_page_not_found_heading }}</h1>
+        <p>{{ settings.text_page_not_found_para }}</p>
+    </div> <!-- .pagecontent -->
+    {% if settings.recommended_products_show_page == true and collections[settings.recommended_products_coll_page].products.size > 0 %}
+    <div class="productlist">
+		<h3>{{ settings.recommended_products_title_page }}</h3>
+		{% for product in collections[settings.recommended_products_coll_page].products limit: 3 %}
+        {% include 'product-list-item' %}
+        {% endfor %}
+	</div><!-- .productlist -->
+	{% endif %}
+</div><!-- #content -->
+<div id="aside">
+	{% include 'sidebar' %}
+</div><!-- #aside -->

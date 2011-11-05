@@ -1,0 +1,165 @@
+{% if settings.breadcrumbs_enabled == true or settings.social_links_page_show_tw == true or settings.social_links_page_show_fb == true or settings.social_links_page_show_goog == true %}
+<div id="breadcrumbs">
+    {% if settings.breadcrumbs_enabled == true %}
+    <a href="/" title="{{ settings.text_home }}">{{ settings.text_home }}</a>
+    &raquo;
+    {{ product.collections.first.title | link_to: product.collections.first.url }}
+	&raquo;
+	<a href="{{ product.url }}">{{ product.title }}</a>
+    {% endif %}
+	{% include 'sociallinks' with product %}
+</div><!-- #breadcrumbs -->
+{% endif %}
+
+<div id="content">
+	<div class="productimages">
+        {% if settings.image_product_sale_enabled == true and product.compare_at_price_max > product.price %}
+            <a class="saleflag" href="{{ product.url }}"><img src="{{ 'sale_plush.png' | asset_url }}" alt="Sale" /></a>
+        {% endif %}
+		<div class="main">
+			<img src="{{ product.images.first | product_img_url: 'large' }}" alt="{{ product.title | escape }}" />
+        </div><!-- .main -->
+		<div class="thumbs"><ul>
+		{% for image in product.images %}<li><a href="{{ image | product_img_url: 'large' }}" class="{% if forloop.last %}last{% endif %}{% if forloop.index == 5 or forloop.index == 10 or forloop.index == 15 %}fifth{% endif %}" title="{{ product.title | escape }}">
+        {{ image | product_img_url: 'medium' | img_tag }}
+        </a></li>{% endfor %}</ul>
+		</div><!-- .thumbs -->
+        <script type="text/javascript">
+            // <![CDATA[
+            $(function(){
+                {% if settings.fancybox_products_enabled == true %}
+                $('#content .productimages .thumbs a').fancybox();
+                {% else %}
+                $('#content .productimages .thumbs a').bind('click mouseover', function(){
+                    var $atag = $(this);
+                    var $maincont = $('#content .productimages .main');
+                    if($maincont.find('img:first').attr('src') != $atag.attr('href')) {
+                        $maincont.find('img').fadeOut(200, function(){ 
+                            $(this).remove(); 
+                        });
+                        $('<img/>').attr('src', $atag.attr('href')).hide().appendTo($maincont)
+                            .resizeImg({maxHeight: $maincont.height(), maxWidth: $maincont.width(), fadeIn: true });
+                        return false;
+                    }
+                    return false;
+                });
+                {% endif %}
+            });
+            // ]]>
+        </script>
+	</div><!-- .productimages -->
+	<div class="productdetail">
+		<h1>{{ product.title }}</h1>
+		{% if product.available %}
+		<form action="/cart/add" method="post">
+			<div class="variants">
+                {% if product.variants.size == 1 %}
+                    <input type="hidden" name="id" value="{{ product.variants.first.id }}" />
+                    <div id="price-field">
+                        {{ product.variants.first.price | money }}
+                        {% if product.variants.first.compare_at_price > product.variants.first.price %}
+                            <span class="was-price">
+                                ({{ settings.text_was}} {{ product.variants.first.compare_at_price | money }})
+                            </span>
+                        {% endif %}
+                    </div>
+                {% else %}
+                    {% if settings.product_variant_mode == 'radio' %}
+                        <ul>
+                            {% for variant in product.variants %}
+                                <li><input type="radio" id="var{{ variant.id }}" name="id" value="{{ variant.id }}"{% if forloop.index == 1 %} checked{% endif %}> <label for="var{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</label></li>
+            				{% endfor %}
+                        </ul>
+                    {% else %}
+        				<select id="product-select" name='id'>
+            				{% for variant in product.variants %}
+            				    <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
+            				{% endfor %}
+        				</select>
+    				    <div id="price-field"></div>
+                        <script type="text/javascript">
+                            var selectCallback = function(variant, selector) {
+                                if (variant && variant.available == true) {
+                                    // selected a valid variant
+                                    $('#content .productdetail .buttoncont').removeClass('disabled').find('#purchase').removeAttr('disabled'); // remove unavailable class from add-to-cart button, and re-enable button
+                                    var newHtml = Shopify.formatMoney(variant.price, "{{shop.money}}");
+                                    if(variant.compare_at_price > variant.price) {
+                                        newHtml += '<span class="was-price">({{ settings.text_was}} ' + Shopify.formatMoney(variant.compare_at_price, "{{shop.money}}") + ')</span>';
+                                    }
+                                    $('#price-field').html(newHtml);  // update price field
+                                } else {
+                                    // variant doesn't exist
+                                    $('#content .productdetail .buttoncont').addClass('disabled').find('#purchase').attr('disabled', 'disabled'); // set add-to-cart button to unavailable class and disable button
+                                    var message = variant ? "Sold Out" : "Unavailable";    
+                                    $('#price-field').text(message); // update price-field message
+                                }
+                            };
+                            $(function() {
+                                new Shopify.OptionSelectors("product-select", { product: {{ product | json }}, onVariantSelected: selectCallback });
+                                {% assign found_one_in_stock = false %}
+                                {% for variant in product.variants %}
+                                    {% if variant.available and found_one_in_stock == false %}
+                                        {% assign found_one_in_stock = true %}
+                                        {% for option in product.options %}
+                                            jQuery('.single-option-selector:eq(' + {{ forloop.index0 }} + ')').val({{ variant.options[forloop.index0] | json }}).trigger('change');
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            });  
+                        </script>
+                    {% endif %}
+                {% endif %}
+			</div><!-- .variants -->
+            <div class="buttoncont">
+			    <input type="submit" name="add" value="{{ settings.text_purchase }}" id="purchase" class="addtocart" />
+            </div>
+		</form>
+        
+		{% else %}
+		    <p class="unavailable">{{ settings.text_product_unavailable }}</p>
+		{% endif %}
+		<div class="description pagecontent simple">{{ product.description }}</div>
+	</div><!-- .productdetail -->
+    
+    <div class="clearit"></div>
+    <div class="productlist">
+        {% if settings.rel_product_method == 'related' %}
+            <!-- Products which have a matching related tag e.g. 'related-group1' -->
+            {% assign count = 0 %}
+            {% for related_product in collections.all.products %}
+                {% assign tagmatch = 0 %}
+                {% for reltag in related_product.tags %}
+                    {% capture relremoved %}{{ reltag | remove_first: 'related-' }}{% endcapture %}
+                    {% if relremoved != reltag and count != '5' and related_product.handle != product.handle %}
+                        {% for currprodtag in product.tags %}
+                            {% if currprodtag == reltag %}
+                                {% assign tagmatch = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+                {% if tagmatch == 1 %}
+                    {% capture count %}{{ count | plus: 1 }}{% endcapture %}
+                    {% if count == '1' %}<h2>{{ settings.text_related_items }}</h2>{% endif %}
+                    <div class="product{% if count == '4' %} last{% endif %}">
+                        {% include 'product-list-item-inner' with related_product %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        
+        {% if settings.rel_product_method == 'type' %}
+            <!-- Products of same type -->
+            {% assign count = 0 %}
+            {% for related_product in collections.all.products %}
+                {% if related_product.type == product.type and related_product.handle != product.handle and count != '5' %}
+                    {% capture count %}{{ count | plus: 1 }}{% endcapture %}
+                    {% if count == '1' %}<h2>{{ settings.text_related_items }}</h2>{% endif %}
+                    <div class="product{% if count == '4' %} last{% endif %}">
+                        {% include 'product-list-item-inner' with related_product %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div><!-- .productlist -->
+</div>

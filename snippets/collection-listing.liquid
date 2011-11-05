@@ -1,0 +1,81 @@
+{% if settings.breadcrumbs_enabled == true or settings.social_links_page_show_tw == true or settings.social_links_page_show_fb == true or settings.social_links_page_show_goog == true %}
+<div id="breadcrumbs">
+    {% if settings.breadcrumbs_enabled == true %}
+    <a href="/" title="{{ settings.text_home }}">{{ settings.text_home }}</a>
+    &raquo;
+    <a href="/collections">{{ settings.text_prod_coll }}</a>
+    {% endif %}
+    {% include 'sociallinks' with article %}
+</div><!-- #breadcrumbs -->
+{% endif %}
+
+<div id="content" class="hasaside">
+    <h1>{{ settings.text_prod_coll }}</h1>
+    <ul class="collectionlist">
+        {% for collection in collections %}
+            {% unless collection.handle == 'frontpage' or collection.handle == 'all'  %}
+                <li class="collection">
+                    <h3 class="inline">{{ collection.title | link_to: collection.url }}</h3> <span>- {{ collection.all_products_count }} products</span>
+                    <ul class="miniproductlist">
+                    {% for product in collection.products limit: 9 %}
+                        <li>
+                            <div class="title">
+                                <span>{{ product.title }}</span>
+                                <canvas class="notch" width="20" height="10"></canvas>
+                            </div>
+                            <a class="imagecontainer" href="{{ product.url }}">
+                            {% for image in product.images limit: 2 %}
+                                <img class="img{{ forloop.index }}" src="{{ image | product_img_url: 'small' }}" alt="{{ product.title }}" />
+                            {% endfor %}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    </ul>
+                    <div class="clearit"></div>
+                </li>
+            {% endunless %}
+        {% endfor %}
+    </ul>
+    
+    
+    <script type="text/javascript">
+    // <![CDATA[
+    $(function(){
+        //Set position & dimensions of popup title
+        $('#content .miniproductlist li .title').each(function(){
+            //Set this to have a large width so the child span can find its natural width
+            $(this).css('visibility', 'hidden').show().css('width', 600);
+            $(this).width($(this).find(':first').width() + 16);
+            $(this).hide().css('visibility', '');
+            //Now we have width, offset x
+            var w = $(this).width();
+            var contw = $(this).parent().width();
+            $(this).css('left', (contw / 2 - w / 2) - 8);
+        });
+        //Create notch graphic
+        $('#content .miniproductlist li .title canvas.notch').each(function(){
+            if (this.getContext){
+                var ctx = this.getContext('2d');
+                if(ctx) {
+                    ctx.beginPath();
+                    ctx.fillStyle = "{{ settings.recom_small_popup_color }}";
+                    ctx.moveTo(0,10);
+                    ctx.lineTo(10,0);
+                    ctx.lineTo(20,10);
+                    ctx.fill();
+                }
+            }
+        });
+        //Init popup title fade in
+        $('#content .miniproductlist li .imagecontainer').hover(function(){
+                $(this).prev().stop(true,true).fadeIn(200);
+            }, function(){
+                $(this).prev().stop(true,true).fadeOut(100);
+            });
+    });
+    // ]]>
+    </script>
+</div><!-- #content -->
+<div id="aside">
+    {% include 'sidebar' %}
+</div><!-- #aside -->

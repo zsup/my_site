@@ -1,0 +1,19 @@
+{% if template == 'blog' and blog.tags.size > 0 %}
+<div class="tags">
+    <h3>{{ settings.text_tags }}</h3>
+    <ul>
+        {% if current_tags and current_tags.size > 0 %}
+            <li><a href="{{ blog.url }}">{{ settings.text_all }}</a></li>
+        {% else %}
+            <li class="active"><a href="{{ blog.url }}">{{ settings.text_all }}</a></li>
+        {% endif %}
+        {% for tag in blog.tags %}  
+            {% if current_tags contains tag %}
+                <li class="active">{{ tag | highlight_active_tag | link_to_remove_tag: tag }}</li>
+            {% else %}
+                <li>{{ tag | highlight_active_tag | link_to_add_tag: tag }}</li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

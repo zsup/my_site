@@ -1,0 +1,5 @@
+<div class="text">
+	<h2>{{ pages[settings.home_page_content_title].title }}</h2>
+	<p>{{ pages[settings.home_page_content_title].content | strip_html | truncate: settings.home_page_content_truncate_length }}</p>
+    <p><a class="readmore" href="{{ pages[settings.home_page_content_title].url }}">{{ settings.text_read_more }} &rarr;</a></p>
+</div>

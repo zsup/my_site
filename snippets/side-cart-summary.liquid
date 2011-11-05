@@ -1,0 +1,19 @@
+<div class="cartsummary">
+    <div class="header">
+		<h2>{{ settings.text_cart_summary }}</h2>
+        {% if cart.item_count > 0 %}
+		<p><a href="/cart">{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</a></p>
+        {% endif %}
+	</div>
+	{% if cart.item_count > 0 %}
+	<ul>
+	{% for item in cart.items %}
+		<li>
+			<span><a href="{{ item.product.url }}">{{ item.quantity }}x {{ item.title }}</a></span>
+		</li>
+	{% endfor %}
+	</ul>
+	{% else %}
+	Your cart is empty
+	{% endif %}
+</div>

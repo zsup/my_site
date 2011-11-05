@@ -1,0 +1,15 @@
+<div class="social">
+    {% if settings.social_links_page_show_tw == true %}
+    <div class="twittercont"><div id="twitterwidget"></div></div>
+    {% endif %}
+	{% if settings.social_links_page_show_fb == true %}
+    <div class="facebookcont"><iframe src="https://www.facebook.com/plugins/like.php?app_id=135286413216137&amp;href={{ shop.url }}{{ sociallinks.url }}&amp;send=false&amp;layout=button_count&amp;width=140&amp;show_faces=true&amp;action=recommend&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:140px; height:21px;" allowTransparency="true"></iframe></div>
+    {% endif %}
+   {% if settings.social_links_page_show_goog == true %}
+   <div class="plusonecont"><g:plusone size="medium"></g:plusone></div>
+   {% endif %}
+   
+   {% if template == 'blog' or template == 'article' %}
+   <a class="rss" href="{{ blog.url }}.atom" title="{{ blog.title | escape }} RSS"><img src="{{ 'rss_icon.png' | asset_url }}" alt="{{ blog.title | escape }} RSS"/></a>
+   {% endif %}
+</div>

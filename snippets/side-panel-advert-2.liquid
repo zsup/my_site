@@ -1,0 +1,9 @@
+<div class="advert">
+    {% if settings.left_image_2_url != '' %}
+    <a href="{{ settings.left_image_2_url }}">
+    {% endif %}
+        <img src="{{ 'left_image_2.png' | asset_url }}" alt="{% if settings.left_image_2_alt != '' %}{{ settings.left_image_2_alt }}{% endif %}" />
+    {% if settings.left_image_2_url != '' %}
+    </a>
+    {% endif %}
+</div><!-- .advert -->

@@ -1,0 +1,101 @@
+<div id="content">
+    {% if settings.show_homepage_slideshow == true %}
+    <div id="banners">
+    	<div class="slides">
+            {% if settings.slide_1_url != '' %}<a href="{{ settings.slide_1_url }}"{% if settings.slide_1_newtab == true %} target="_blank"{% endif %}>{% endif %}
+            <img src="{{ 'slide_1_image.png' | asset_url }}" alt="{{ settings.slide_1_alt }}" />
+            {% if settings.slide_1_url != '' %}</a>{% endif %}
+            {% if settings.slide_count == '2' or settings.slide_count == '3' or settings.slide_count == '4' or settings.slide_count == '5' %}
+                {% if settings.slide_2_url != '' %}<a href="{{ settings.slide_2_url }}"{% if settings.slide_2_newtab == true %} target="_blank"{% endif %}>{% endif %}
+                <img src="{{ 'slide_2_image.png' | asset_url }}" alt="{{ settings.slide_2_alt }}" />
+                {% if settings.slide_2_url != '' %}</a>{% endif %}
+                {% if settings.slide_count == '3' or settings.slide_count == '4' or settings.slide_count == '5' %}
+                    {% if settings.slide_3_url != '' %}<a href="{{ settings.slide_3_url }}"{% if settings.slide_3_newtab == true %} target="_blank"{% endif %}>{% endif %}
+                    <img src="{{ 'slide_3_image.png' | asset_url }}" alt="{{ settings.slide_3_alt }}" />
+                    {% if settings.slide_3_url != '' %}</a>{% endif %}
+                    {% if settings.slide_count == '4' or settings.slide_count == '5' %}
+                        {% if settings.slide_4_url != '' %}<a href="{{ settings.slide_4_url }}"{% if settings.slide_4_newtab == true %} target="_blank"{% endif %}>{% endif %}
+                        <img src="{{ 'slide_4_image.png' | asset_url }}" alt="{{ settings.slide_4_alt }}" />
+                        {% if settings.slide_4_url != '' %}</a>{% endif %}
+                        {% if settings.slide_count == '5' %}
+                            {% if settings.slide_5_url != '' %}<a href="{{ settings.slide_5_url }}"{% if settings.slide_5_newtab == true %} target="_blank"{% endif %}>{% endif %}
+                            <img src="{{ 'slide_5_image.png' | asset_url }}" alt="{{ settings.slide_5_alt }}" />
+                            {% if settings.slide_5_url != '' %}</a>{% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div><!-- .slides -->
+		<div class="advert">
+            {% if settings.banner_right_image_url != '' %}
+            <a href="{{ settings.banner_right_image_url }}">
+            {% endif %}
+                <img src="{{ 'banner_right_image.png' | asset_url }}" alt="{% if settings.banner_right_image_alt != '' %}{{ settings.banner_right_image_alt }}{% endif %}" />
+            {% if settings.banner_right_image_url != '' %}
+            </a>
+            {% endif %}
+        </div><!-- .advert -->
+	</div><!-- #banners -->
+    <script type="text/javascript">
+        // <![CDATA[
+        $(function(){
+            $('#content .slides').nivoSlider({
+                effect:'{{ settings.slider_effect }}',
+                pauseTime:{{ settings.slide_delay }}
+            });
+        });
+        // ]]>
+    </script>
+    {% endif %}
+	<div class="collayout">
+		<div class="col-1-left">
+            {% if settings.homeside_slot1_snippet != '' %}{% include settings.homeside_slot1_snippet %}{% endif %}
+            {% if settings.homeside_slot2_snippet != '' %}{% include settings.homeside_slot2_snippet %}{% endif %}
+            {% if settings.homeside_slot3_snippet != '' %}{% include settings.homeside_slot3_snippet %}{% endif %}
+            {% if settings.homeside_slot4_snippet != '' %}{% include settings.homeside_slot4_snippet %}{% endif %}
+            {% if settings.homeside_slot5_snippet != '' %}{% include settings.homeside_slot5_snippet %}{% endif %}
+		</div><!-- .col-1-left -->
+        {% if settings.show_homepage_mid_text == true %}
+        <div class="hometext">
+            {% if pages[settings.home_page_mid_content_title] %}
+            <h2>{{ pages[settings.home_page_mid_content_title].title }}</h2>
+            {{ pages[settings.home_page_mid_content_title].content }}
+            {% else %}
+            <h2>Welcome</h2>
+            <p>You made it! Congratulations on starting your own e-commerce store!</p>
+            <p>This is your shop’s frontpage, and it’s the first thing your customers will see when they arrive. You’ll be able to organize and style this page however you like.</p>
+            <p>To get started adding products to your shop, head over to the <a href="/admin">Admin Area</a>.</p>
+            <p>Enjoy the software,<br /> 
+            Your Shopify Team.</p>
+            {% endif %}
+        </div><!-- .hometext -->
+        {% endif %}
+		<div class="col-3-right">
+			{% if settings.recommended_products_show_1 == true %}
+			<div class="productlist top">
+				<h3>{{ settings.recommended_products_title_1 }}</h3>
+                {% if collections[settings.recommended_products_coll_1].products.size > 0 %}
+				{% for product in collections[settings.recommended_products_coll_1].products limit: 3 %}
+                {% include 'product-list-item' %}
+                {% endfor %}
+                {% else %}
+                <p><strong>Show products here!</strong> Go to the 'Product display settings' section of the theme settings in your <a href="/admin">Admin area</a> to set up the collection you want to show!</p>
+                {% endif %}
+                <div class="clearit"></div>
+			</div><!-- .productlist -->
+			{% endif %}
+			{% if settings.recommended_products_show_2 == true %}
+			<div class="productlist">
+				<h3>{{ settings.recommended_products_title_2 }}</h3>
+                {% if collections[settings.recommended_products_coll_2].products.size > 0 %}
+				{% for product in collections[settings.recommended_products_coll_2].products limit: 3 %}
+                {% include 'product-list-item' %}
+                {% endfor %}
+                {% else %}
+                <p><strong>Show products here!</strong> Go to the 'Product display settings' section of the theme settings in your <a href="/admin">Admin area</a> to set up the collection you want to show!</p>
+                {% endif %}
+			</div><!-- .productlist -->
+			{% endif %}
+		</div><!-- .col-3-right -->
+	</div><!-- .collayout -->
+</div><!-- #content -->

@@ -1,0 +1,33 @@
+{% if settings.breadcrumbs_enabled == true or settings.social_links_page_show_tw == true or settings.social_links_page_show_fb == true or settings.social_links_page_show_goog == true %}
+<div id="breadcrumbs">
+    {% if settings.breadcrumbs_enabled == true %}
+    <a href="/" title="{{ settings.text_home }}">{{ settings.text_home }}</a>
+    &raquo;
+	<a href="{{ page.url }}">{{ page.title }}</a>
+    {% endif %}
+    {% include 'sociallinks' with page %}
+</div><!-- #breadcrumbs -->
+{% endif %}
+
+<div id="content" class="hasaside">
+    <div class="pagecontent">
+		<h1>{{ page.title }}</h1>
+		{{ page.content }}
+	</div><!-- .pagecontent -->
+    
+    {% if settings.recommended_products_show_page == true %}
+	<div class="productlist">
+		<h3>{{ settings.recommended_products_title_page }}</h3>
+        {% if collections[settings.recommended_products_coll_page].products.size > 0 %}
+		{% for product in collections[settings.recommended_products_coll_page].products limit: 3 %}
+        {% include 'product-list-item' %}
+        {% endfor %}
+        {% else %}
+        <p><strong>Show products here!</strong> Go to the 'Product display settings' section of the theme settings in your <a href="/admin">Admin area</a> to set up the collection you want to show!</p>
+        {% endif %}
+	</div><!-- .productlist -->
+	{% endif %}
+</div><!-- #content -->
+<div id="aside">
+	{% include 'sidebar' %}
+</div><!-- #aside -->

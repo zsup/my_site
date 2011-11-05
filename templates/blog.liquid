@@ -1,0 +1,62 @@
+{% if settings.breadcrumbs_enabled == true or settings.social_links_page_show_tw == true or settings.social_links_page_show_fb == true or settings.social_links_page_show_goog == true %}
+<div id="breadcrumbs">
+    {% if settings.breadcrumbs_enabled == true %}
+    <a href="/" title="{{ settings.text_home }}">{{ settings.text_home }}</a>
+    &raquo;
+    <a href="{{ blog.url }}">{{ blog.title }}</a>
+    {% if current_tags %}
+        {% for tag in current_tags %}
+            &raquo; {{ tag | link_to_tag: tag }}
+        {% endfor %}
+    {% endif %}
+    {% endif %}
+    {% include 'sociallinks' with blog %}
+</div><!-- #breadcrumbs -->
+{% endif %}
+
+<div id="content" class="hasaside">
+    <!--<h1>{{blog.title}}</h1>-->
+    <div class="articles">
+		{% paginate blog.articles by 10 %}
+
+		{% for article in blog.articles  %}
+		<div class="article">
+			<h3>
+				<a href="{{article.url}}">{{ article.title }}</a>
+			</h3>
+			<p class="article_detail">
+    			<span>{{ settings.text_article_by }}</span> {{ article.author }}<br />
+    			<span>{{ settings.text_article_on }}</span> {{ article.published_at | date: "%B %d, %Y" }}<br />
+    			{% if blog.comments_enabled? %}
+    				<span>{{ settings.text_article_with }}</span> <a href="{{article.url}}#comments">{{ article.comments_count }} {{ settings.text_article_with_comments }}</a>
+                {% endif %}
+            </p>
+			<div class="article-body pagecontent simple">
+				{{ article.excerpt_or_content }}
+			</div>
+            <div class="clearit"></div>
+		</div><!-- .article -->
+		{% endfor %}
+		
+		<div class="pagination">
+			{{ paginate | default_pagination }}
+		</div>
+		{% endpaginate %}
+	</div><!-- .articles -->
+    
+    {% if settings.recommended_products_show_blog == true %}
+    <div class="productlist">
+		<h3>{{ settings.recommended_products_title_blog }}</h3>
+        {% if collections[settings.recommended_products_coll_blog].products.size > 0 %}
+		{% for product in collections[settings.recommended_products_coll_blog].products limit: 3 %}
+        {% include 'product-list-item' %}
+        {% endfor %}
+        {% else %}
+        <p><strong>Show products here!</strong> Go to the 'Product display settings' section of the theme settings in your <a href="/admin">Admin area</a> to set up the collection you want to show!</p>
+        {% endif %}
+	</div><!-- .productlist -->
+	{% endif %}
+</div><!-- #content -->
+<div id="aside">
+    {% include 'sidebar' %}
+</div><!-- #aside -->

@@ -1,0 +1,14 @@
+<div id="twittercont" class="twitterlist">
+<h2>{{ settings.social_twitter_feed_title }}</h2>
+<script type="text/javascript">
+// <![CDATA[
+$(function(){
+    $("#twittercont").tweet({
+        username: "{{ settings.social_twitter_feed_user }}",
+        count: {{ settings.social_twitter_feed_num }},
+        loading_text: "loading tweets..."
+    });
+});
+// ]]>
+</script>
+</div>

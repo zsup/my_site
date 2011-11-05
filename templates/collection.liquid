@@ -1,0 +1,68 @@
+{% assign collurl = collection.url %}
+{% unless collection.handle %}
+    {% capture collurl %}{{collection.title | url_for_vendor }}{% endcapture %}
+{% endunless %}
+
+{% if settings.breadcrumbs_enabled == true or settings.social_links_page_show_tw == true or settings.social_links_page_show_fb == true or settings.social_links_page_show_goog == true %}
+<div id="breadcrumbs">
+    {% if settings.breadcrumbs_enabled == true %}
+        <a href="/" title="{{ settings.text_home }}">{{ settings.text_home }}</a>
+        &raquo;
+        <a href="{{ collurl }}">{{ collection.title }}</a>
+        {% if current_tags and current_tags.size > 0 %}
+            &raquo;
+            {% for tag in current_tags %}
+                {{ tag | link_to_tag: tag }}{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+    {% include 'sociallinks' with collection %}
+</div><!-- #breadcrumbs -->
+{% endif %}
+
+{% paginate collection.products by settings.pagination_products_per_page %}
+<div id="content">
+    {% if collection.products.size == 0 %}
+		<strong>{{ settings.text_no_products_collection }}</strong>
+	{% else %}
+		<h1>{{ collection.title }}</h1>
+        <div class="pagecontent simple">
+		    {{ collection.description }}
+        </div>
+        {% if collection.tags.size > 0 and settings.collection_tags_enabled == true %}
+            <div class="tags">
+                <h3>{{ settings.text_filter_by }} &raquo;</h3>
+                <ul>
+                    {% if current_tags and current_tags.size > 0 %}
+                        <li><a href="{{ collurl }}">{{ settings.text_all }}</a></li>
+                    {% else %}
+                        <li class="active"><a href="{{ collurl }}">{{ settings.text_all }}</a></li>
+                    {% endif %}
+                        
+                    {% for tag in collection.tags %}
+                        {% comment %}Don't show tags used for relating products together{% endcomment %}
+                        {% capture tagstart %}{{ tag | remove_first: 'related-' }}{% endcapture %}
+                        {% if tagstart == tag %}
+                            {% if current_tags contains tag %}
+                                <li class="active">{{ tag | highlight_active_tag | link_to_remove_tag: tag }}</li>
+                            {% else %}
+                                <li>{{ tag | highlight_active_tag | link_to_add_tag: tag }}</li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+		<div class="productlist">
+		{% for product in collection.products %}
+        {% include 'product-list-item-4col' %}
+        {% endfor %}
+        </div><!-- .productlist -->
+		{% if paginate.pages > 1 %}
+		<div class="pagination">
+			{{ paginate | default_pagination }}
+		</div>
+		{% endif %}
+	{% endif %}
+</div><!-- #content -->
+{% endpaginate %}

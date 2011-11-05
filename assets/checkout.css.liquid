@@ -1,0 +1,78 @@
+body {
+    font-family:{% if settings.body_font != '' %}'{{ settings.body_font }}',{% endif %} Georgia, serif;
+    background:{{ settings.back_solid_color }}{% if settings.back_image_enabled == true %} url('{{ settings.back_image_file | asset_url }}') {{ settings.back_repeat }}{% endif %};
+}
+
+#header,
+#container.slim #header,
+#footer,
+#container.slim #footer {
+    background:transparent;
+    color:{{ settings.para_1_color }};
+    line-height:1.45em;
+    font-size:120%;
+}
+
+#main,
+#container.slim #main {
+    background:#fff;
+    border-radius:4px;
+    border:3px solid #bbb;
+}
+
+#main {
+    border:1px solid #bbb;
+}
+
+#info-bar {
+    padding:6px 0 15px 0;
+}
+
+#header h1 .title {
+    font-size:120%;
+    color:{{ settings.header_1_color }};
+}
+
+#header h1 .subtitle {
+    margin-left:5px;
+}
+
+#container.slim h1 .subtitle {
+    display:block;
+    margin-top:5px;
+}
+
+#thumbs div {
+    border-color:#bbb;
+}
+
+#thumbs span {
+    color:#777;
+}
+
+#products {
+    border-color:#bbb;
+}
+
+#wallet {
+    background: transparent !important;
+}
+
+#wallet #cost {
+    font-size:280%;
+}
+
+#wallet #cost,
+#wallet #shipping_span,
+#wallet #tax_span {
+    color:#777;
+}
+
+#overview {
+    background:none;
+    border:0;
+}
+
+h3 {
+    color:#000;
+}

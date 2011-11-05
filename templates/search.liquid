@@ -1,0 +1,54 @@
+{% if settings.breadcrumbs_enabled == true %}
+<div id="breadcrumbs">
+    <a href="/" title="{{ settings.text_home }}">{{ settings.text_home }}</a>
+    &raquo;
+    <a href="/search">{{ settings.text_search }}</a>
+</div><!-- #breadcrumbs -->
+{% endif %}
+
+<div id="content" class="hasaside">
+    <h1>{{ settings.text_search }}</h1>
+        <div class="search">
+        	<form action="/search" method="get">
+				<input type="text" name="q" id="q" value="{{ settings.text_search }}" />
+			</form>
+		</div>
+    
+    {% if search.performed %}
+    <h6>{{ settings.text_you_searched_for }} <strong>{{search.terms  | escape}}</strong></h6>
+    
+    {% paginate search.results by 10 %}  
+    {% if search.results == empty %}  
+    <p>{{ settings.text_sorry_couldnt_find_anything }} "{{search.terms | escape}}". {{ settings.text_try_alternate_search }}</p>
+    
+    {% else %}
+    <ol class="searchresults">
+    {% for item in search.results %}      
+    <li{% if forloop.index == 1 %} class="first"{% endif %}>
+        <h3>{{ item.title | link_to: item.url }}</h3>
+        {% if item.featured_image %}
+        <div class="image"><a href="{{item.url}}" title="">{{ item.featured_image | product_img_url: 'thumb' | img_tag }}</a></div>
+        {% endif %}
+        <div class="desc">{{ item.content | strip_html | truncatewords: 40 | highlight: search.terms }}<br /><span>View page: {{ item.title | link_to: item.url }} &rarr;</span></div>
+    </li>
+    {% endfor %}
+    </ol>      
+    {% endif %}
+    <p>{{ paginate | default_pagination }}</p>
+    {% endpaginate %}   
+    {% else %}
+    <h6>{{ settings.text_search_contained_no_terms }}</h6>
+    {% endif %}
+    {% if settings.recommended_products_show_page == true and collections[settings.recommended_products_coll_page].products.size > 0 %}
+    <div class="productlist">
+    	<h3>{{ settings.recommended_products_title_page }}</h3>
+		{% for product in collections[settings.recommended_products_coll_page].products limit: 3 %}
+        {% include 'product-list-item' %}
+        {% endfor %}
+	</div><!-- .productlist -->
+    {% endif %}
+</div><!-- #content -->
+	
+<div id="aside">
+    {% include 'sidebar' %}
+</div><!-- #aside -->

@@ -1,0 +1,78 @@
+{% if settings.breadcrumbs_enabled == true or settings.social_links_page_show_tw == true or settings.social_links_page_show_fb == true or settings.social_links_page_show_goog == true %}
+<div id="breadcrumbs">
+    {% if settings.breadcrumbs_enabled == true %}
+    <a href="/" title="{{ settings.text_home }}">{{ settings.text_home }}</a>
+    &raquo;
+    <a href="/cart">Cart</a>
+    {% endif %}
+    {% include 'sociallinks' %}
+</div><!-- #breadcrumbs -->
+{% endif %}
+
+<div id="content">
+    <h1>{{ settings.text_shopping_cart }}</h1>
+    {% if cart.item_count == 0 %}
+    <p><strong>{{ settings.text_your_basket_is_empty }}</strong> {{ settings.text_perhaps_we_can_recommend }}</p>
+    <div class="productlist">
+        {% for product in collections[settings.recommended_products_coll_1].products limit: 4 %}
+    	{% include 'product-list-item' %}
+    	{% endfor %}
+	</div><!-- .productlist -->
+    {% else %}
+    <script type="text/javascript">
+      // <![CDATA[
+      function remove_item(id) {
+          document.getElementById('updates_'+id).value = 0;
+          document.getElementById('cartform').submit();
+      }
+      // ]]>
+    </script>
+    <form action="/cart" method="post" id="cartform">
+    	<table id="basket">
+    		<tr>
+    			<th class="description">{{ settings.text_cart_description }}</th>
+    			<th class="price">{{ settings.text_cart_price }}</th>
+    			<th class="qty">{{ settings.text_cart_qty }}</th>
+    			<th class="delete">{{ settings.text_cart_delete }}</th>
+    			<th class="total">{{ settings.text_cart_total }}</th>
+    		</tr>{% for item in cart.items %}
+    		<tr class="basket-{% cycle 'odd', 'even' %}">
+    			<td>
+    				<div class="image">
+    					<a href="{{ item.product.url }}" title="{{ item.title | escape }} &mdash; {{ item.product.description | strip_html | truncate: 50 | escape }}"><img src="{{ item.product.images.first | product_img_url: 'small' }}" alt="{{ item.title | escape }}" /></a>
+    				</div>
+    				<div class="desc">
+    					<span class="title"><a href="{{ item.product.url }}">{{ item.title }}</a></span>
+    					<p>{{ item.product.description | strip_html | truncate: 120 }}</p>
+    				</div>
+    			</td>
+    			<td><span class="amount">{{ item.price | money }}{% if item.variant.compare_at_price > item.price %}<br /><del>{{ item.variant.compare_at_price | money }}</del>{% endif %}</span></td>
+    			<td><input class="qty" type="number" size="4" name="updates[{{item.variant.id}}]" id="updates_{{ item.variant.id }}" value="{{ item.quantity }}" onfocus="this.select();"/></td>
+    			<td><a href="#" onclick="remove_item({{ item.variant.id }}); return false;">{{ settings.text_cart_remove }}</a></td>
+    			<td><span class="amount">{{ item.line_price | money }}</span></td>
+    		</tr>{% endfor %}
+    	</table><!-- #basket -->
+    	<div class="subtotal">
+    		<div><span class="total">{{ settings.text_cart_total }}</span><span class="amount">{{ cart.total_price | money }}</span></div>
+            <span class="subtext">{{ settings.text_cart_excluding_tax }}</span>
+            <div class="buttons">
+                {% if settings.cart_note_enabled %}
+                    <div class="note">
+                        <label for="note">{{ settings.text_giftnote }}</label>
+                        <textarea name="note" id="note" rows="3" cols="60">{{cart.note}}</textarea>
+                    </div>
+                {% endif %}
+                <div class="btncont"><input type="submit" name="checkout" value="{{ settings.text_cart_checkout }}" /></div>
+    		    <div class="btncont"><input type="submit" id="update-cart" name="update" value="{{ settings.text_cart_update }}" /></div>
+    		    
+                {% if additional_checkout_buttons %}
+                <div class="additionalbutton">
+                  <p class="subtext">- or -</p>
+                  {{ content_for_additional_checkout_buttons }}
+                </div>
+                {% endif %}
+            </div><!-- .buttons -->
+    	</div><!-- .subtotal -->
+    </form><!-- #cartform -->
+    {% endif %}
+</div><!-- #content -->
