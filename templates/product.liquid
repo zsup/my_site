@@ -118,6 +118,38 @@
 		{% else %}
 		    <p class="unavailable">{{ settings.text_product_unavailable }}</p>
 		{% endif %}
+		
+		<!-- ADDED: Stock meter -->
+		<div id="inventory">
+			{% for variant in product.variants %}
+				<div class="inventory-item">
+					{{ variant.title }}<br/>
+					<div class="inventory-bar">
+						<div class="inventory-filler variant_{{forloop.index0}}">&nbsp;</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		
+		<script type="text/javascript">
+		jQuery(document).ready(function($){
+			var product_json = {{ product | json }};
+			// replace inventory bars for variants
+			jQuery.each(product_json.variants, function(i, v){
+				var count = v.inventory_quantity;
+				var sku_string = v.sku+''
+				var original_inventory_string = sku_string.substr(-5,5);
+				var original_inventory = parseInt(original_inventory_string,10);
+				if (count == 0) {
+					$('.variant_'+i).css({'background':'none'}).html('Sold Out');
+				} else {
+					$('.variant_'+i).css({'width': ((count / original_inventory)*100) + "%"});
+				}
+			});
+		});
+		</script>
+		<!-- END: Stock meter -->
+		
 		<div class="description pagecontent simple">{{ product.description }}</div>
 	</div><!-- .productdetail -->
     
