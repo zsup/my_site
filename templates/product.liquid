@@ -50,6 +50,9 @@
 	</div><!-- .productimages -->
 	<div class="productdetail">
 		<h1>{{ product.title }}</h1>
+		
+	<!-- ADDED: Div for purchase actions -->
+	<div id="productaction">
 		{% if product.available %}
 		<form action="/cart/add" method="post">
 			<div class="variants">
@@ -123,9 +126,12 @@
 		<div id="inventory">
 			{% for variant in product.variants %}
 				<div class="inventory-item">
-					{{ variant.title }}<br/>
+					{% if product.variants.size > 1%}
+						<div class="inventory-title">{{ variant.title }}</div>
+					{% endif %}
+					<div class="inventory-status stat_variant_{{forloop.index0}}">&nbsp;</div>
 					<div class="inventory-bar">
-						<div class="inventory-filler variant_{{forloop.index0}}">&nbsp;</div>
+						<div class="inventory-filler fill_variant_{{forloop.index0}}">&nbsp;</div>
 					</div>
 				</div>
 			{% endfor %}
@@ -141,14 +147,17 @@
 				var original_inventory_string = sku_string.substr(-5,5);
 				var original_inventory = parseInt(original_inventory_string,10);
 				if (count == 0) {
-					$('.variant_'+i).css({'background':'none'}).html('Sold Out');
+					$('.fill_variant_'+i).css({'background':'none'}).html('Sold Out');
 				} else {
-					$('.variant_'+i).css({'width': ((count / original_inventory)*100) + "%"});
+					$('.fill_variant_'+i).css({'width': ((count / original_inventory)*100) + "%"});
+					$('.stat_variant_'+i).html(count + " of " + original_inventory + " units still available");
 				}
 			});
 		});
 		</script>
 		<!-- END: Stock meter -->
+	</div>
+	<!-- END: Div for purchase actions -->
 		
 		<div class="description pagecontent simple">{{ product.description }}</div>
 	</div><!-- .productdetail -->

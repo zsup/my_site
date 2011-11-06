@@ -1057,8 +1057,10 @@ font-family:Arial, sans-serif;
 #content .productdetail .variants select {
 }
 
+/* EDITED: For action box */
 #content .productdetail .variants #price-field {
-	font-size:180%;
+	float:left;
+	font-size:250%;
 	margin:20px 0 0 0;
 }
 
@@ -2109,11 +2111,17 @@ font-family:Arial, sans-serif;
 .fancybox-ie #fancybox-bg-nw { filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='{{ 'fancy_shadow_nw.png'  | asset_url }}', sizingMethod='scale'); }
 
 #inventory{
+	clear:both;
+
         /*Give this div a width if you'd like to set the barcharts to a certain width. Otherwise, it will take on the width of its parent div. */
 }
 
 .inventory-filler{
-	background:#000;
+	background:{{ settings.image_back_color }};
+	-webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+	height:20px;
 }
 
 .inventory-item{
@@ -2121,7 +2129,19 @@ font-family:Arial, sans-serif;
 }
 
 .inventory-bar{
-	background:#e1e1e1;
+	background:#fff;
 	height:20px;
 	width:100%;
+	-webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+#productaction{
+	background:{{ settings.image_back_inner_color }};
+	padding: 10px;
+}
+
+#productaction .buttoncont {
+	float:right;
 }
