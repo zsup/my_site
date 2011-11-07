@@ -922,7 +922,8 @@ font-family:Arial, sans-serif;
 
 #content .productlist .product .foot .buttoncont,
 #content .productdetail .buttoncont,
-#content #comment-form .buttoncont
+#content #comment-form .buttoncont,
+#mc_embed_signup .buttoncont
 {
 	display:block;
 	height:30px;
@@ -944,7 +945,8 @@ font-family:Arial, sans-serif;
 #content .productlist .product .foot .buttoncont input.addbutton,
 #content .productdetail .buttoncont input.addtocart,
 #content #cartform .subtotal .btncont input,
-#content #comment-form #comment-submit
+#content #comment-form #comment-submit,
+#mc_embed_signup .buttoncont input
 {
     display:block;
     color:{{ settings.button_text_color }};
@@ -2147,4 +2149,21 @@ font-family:Arial, sans-serif;
 
 #productaction .buttoncont {
 	float:right;
+}
+
+#mc_embed_signup input[type="email"] {
+	width:215px;
+	height:30px;
+    line-height:30px;
+	border:1px solid #ddd;
+	padding:0 0 0 10px;
+    color:#222;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	margin: 0 0 5px 0;
+}
+
+#mc_embed_signup .buttoncont {
+	margin: 0 0 10px 0;
 }
