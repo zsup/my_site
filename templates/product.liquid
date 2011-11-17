@@ -119,13 +119,22 @@
 		</form>
         
 		{% else %}
-		    <p class="unavailable">{{ settings.text_product_unavailable }}</p>
+		    <h4>I'm sorry, this product is sold out!</h4>
+			<p class="unavailable">If you would like to be put on the waitlist and notified when the product is available again, please enter your email address below.</p>
+			<div id="mc_embed_waitlist">
+			<form action="http://hexgoods.us2.list-manage1.com/subscribe/post?u=4a55a0ba2675d2ab73fe6c740&amp;id=5571e77c12" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank">
+				<div class="waitlist-email"><input type="email" value="" name="EMAIL" class="email" id="mce-EMAIL" placeholder="email address" required></div>
+				<input type="hidden" name="PRODUCT" value="{{ product.title }}">
+				<div class="buttoncont"><input type="submit" value="Notify me" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
+			</form>
+			</div>
+			<div class="placeholder"></div>
 		{% endif %}
 		
 		<!-- ADDED: Stock meter -->
 		<div id="inventory">
 			{% for variant in product.variants %}
-				<div class="inventory-item">
+				<div class="inventory-item item_variant_{{forloop.index0}}">
 					{% if product.variants.size > 1%}
 						<div class="inventory-title">{{ variant.title }}</div>
 					{% endif %}
@@ -147,10 +156,10 @@
 				var original_inventory_string = sku_string.substr(-5,5);
 				var original_inventory = parseInt(original_inventory_string,10);
 				if (count == 0) {
-					$('.fill_variant_'+i).css({'background':'none'}).html('Sold Out');
+					$('.item_variant_'+i).css({'display':'none'});
 				} else {
 					$('.fill_variant_'+i).css({'width': ((count / original_inventory)*100) + "%"});
-					$('.stat_variant_'+i).html(count + " of " + original_inventory + " units still available");
+					$('.stat_variant_'+i).html(count + " of " + original_inventory + " units available");
 				}
 			});
 		});

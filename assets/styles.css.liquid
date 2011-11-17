@@ -925,7 +925,8 @@ font-family:Arial, sans-serif;
 #content .productlist .product .foot .buttoncont,
 #content .productdetail .buttoncont,
 #content #comment-form .buttoncont,
-#mc_embed_signup .buttoncont
+#mc_embed_signup .buttoncont,
+#mc_embed_waitlist .buttoncont
 {
 	display:block;
 	height:30px;
@@ -948,7 +949,8 @@ font-family:Arial, sans-serif;
 #content .productdetail .buttoncont input.addtocart,
 #content #cartform .subtotal .btncont input,
 #content #comment-form #comment-submit,
-#mc_embed_signup .buttoncont input
+#mc_embed_signup .buttoncont input,
+#mc_embed_waitlist .buttoncont input
 {
     display:block;
     color:{{ settings.button_text_color }};
@@ -2181,4 +2183,36 @@ font-family:Arial, sans-serif;
 	-moz-box-shadow:0 5px 10px rgba(0, 0, 0, 0.2);
 	box-shadow:0 5px 10px rgba(0, 0, 0, 0.2);
 	padding: 30px;
+}
+
+#mc_embed_waitlist {
+	margin-top: 10px;
+}
+
+
+#mc_embed_waitlist input[type="email"] {
+	float:left;
+	width:215px;
+	height:30px;
+    line-height:30px;
+	border:1px solid #ddd;
+	padding:0 0 0 10px;
+    color:#222;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	margin: 0 0 5px 0;
+}
+
+#content .productdetail #mc_embed_waitlist .buttoncont {
+	margin: 0 0 10px 0;
+	float:right;
+}
+
+.waitlist-email {
+	float:left;
+}
+
+.placeholder {
+	clear:both;
 }
