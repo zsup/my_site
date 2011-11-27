@@ -139,7 +139,7 @@
 						<div class="inventory-title">{{ variant.title }}</div>
 					{% endif %}
 					<div class="inventory-status stat_variant_{{forloop.index0}}">&nbsp;</div>
-					<div class="inventory-bar">
+					<div class="inventory-bar bar_variant_{{forloop.index0}}">
 						<div class="inventory-filler fill_variant_{{forloop.index0}}">&nbsp;</div>
 					</div>
 				</div>
@@ -157,6 +157,9 @@
 				var original_inventory = parseInt(original_inventory_string,10);
 				if (count == 0) {
 					$('.item_variant_'+i).css({'display':'none'});
+				} else if (count / original_inventory > .6) {
+					$('.bar_variant_'+i).css({'display':'none'});
+					$('.stat_variant_'+i).html(count + " units available");
 				} else {
 					$('.fill_variant_'+i).css({'width': ((count / original_inventory)*100) + "%"});
 					$('.stat_variant_'+i).html(count + " of " + original_inventory + " units available");
