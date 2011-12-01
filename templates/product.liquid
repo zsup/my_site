@@ -157,9 +157,8 @@
 				var original_inventory = parseInt(original_inventory_string,10);
 				if (count == 0) {
 					$('.item_variant_'+i).css({'display':'none'});
-				} else if (count / original_inventory > .6) {
-					$('.bar_variant_'+i).css({'display':'none'});
-					$('.stat_variant_'+i).html(count + " units available");
+				} else if (count > 20) {
+					$('.item_variant_'+i).css({'display':'none'});
 				} else {
 					$('.fill_variant_'+i).css({'width': ((count / original_inventory)*100) + "%"});
 					$('.stat_variant_'+i).html(count + " of " + original_inventory + " units available");
