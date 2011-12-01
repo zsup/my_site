@@ -1,0 +1,113 @@
+/* ------------------------------------------------------------------------------------------
+ * Grapevine Reviews CSS
+ * Copyright 2009
+ * 
+ * For customized reviews, modify classes as required
+ * ------------------------------------------------------------------------------------------
+ */
+
+/* ------------------------------------------------------------------------------------------
+ * Global Styles
+ * ------------------------------------------------------------------------------------------
+ */
+#gv_all_badges { position: absolute; left: -10000px; top: 0; width: 1px; height: 1px; }
+ 
+.gvbadge, .gvreviews { display:block; position:relative; font-size: 11px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight:normal; line-height: 1.5em; margin: 0; padding: 0; }
+
+/* style for summary text */
+.gvsummary span.gvtext { font-size: 11px; font-weight:normal; }
+
+/* style for rating stars */
+.gvrating img.gvstar { border: none !important; margin: 0 !important; padding: 0 !important; display:inline !important; }
+.gvrating .gvstar { width: 16px; height: 16px; display:inline-block;}
+.gvrating .gvstar.full { background: transparent url({{'star_blue16.png'|asset_url}}) center center no-repeat;}
+.gvrating .gvstar.part { background: transparent url({{'star_blue16_part.png'|asset_url}}) center center no-repeat;}
+.gvrating .gvstar.none  { background: transparent url({{'star_gray16.png'|asset_url}}) center center no-repeat;}
+
+
+/* ------------------------------------------------------------------------------------------
+ * Badge
+ * ------------------------------------------------------------------------------------------
+ */
+
+/* frame for badges */
+.gvbadge { margin: 5px 0; }
+/* div for rating stars */
+.gvbadge .gvrating { margin: 0; padding: 0; }
+/* div for text */
+.gvbadge .gvsummary { margin: 0; padding: 0;}
+
+
+/* ------------------------------------------------------------------------------------------
+ * Reviews
+ * ------------------------------------------------------------------------------------------
+ */
+.gvreviews { margin: 10px 0; padding: 10px; border: 1px solid #ddd; min-width: 360px; overflow:hidden; }
+.gvreviews .gvrating { padding: 3px 0; }
+.gvreviews .gvsummary { padding: 3px 0; }
+.gvreviews img { vertical-align: middle; }
+.gvreviews p { line-height: 1.5em;}
+.gvreviews a { color: #33a; }
+.gvreviews a:hover { color: #33a; }
+.gvreviews h3 { margin: 0; line-height: 1.7em; }
+
+/* rating stars */
+
+/* new review form */
+.gvreviews #gv_review_new { margin-top: 10px;}
+.gvreviews form table { margin: 0 0 10px; padding: 0; border-collapse: collapse; width: 100%; }
+.gvreviews form table th { vertical-align: top; padding: 3px 5px; background: #ddd; color: #000; font-weight: bold; }
+.gvreviews form table td { vertical-align: top; padding: 3px 5px; line-height:1.5em; font-size:12px;}
+.gvreviews form table td.label { width: 30%; text-align: right; font-weight: normal; color: #000; }
+.gvreviews form table td.value { width: 65%; text-align: left; font-weight: normal; color: #666; }
+.gvreviews form table input[type=text] { width: 99%; padding: 2px 0; border: 1px solid #ddd; font-size: 12px;}
+.gvreviews form table textarea { width: 99%; padding: 2px 0; border: 1px solid #ddd; font-size: 12px;}
+.gvreviews form span.note { font-size: 11px; color: #999; font-weight: normal;}
+
+/* error msg on form */
+.gvreviews .errorExplanation { padding: 5px; background:#FBE3E4;color:#8a1f11;border: 1px solid #FBC2C4; margin:5px;}
+.gvreviews #errorExplanation h2 { font-size: 14px; margin: 0 0 10px 0;}
+.gvreviews .errorExplanation ul { }
+.gvreviews .errorExplanation ul li { margin-left: 20px; }
+
+/* reviews listing */
+.gvreviews #gv_reviews { margin-top: 10px;}
+.gvreviews #gv_header h2 { text-align:center; }
+
+/* single review */
+.gvreviews .gvreview { margin: 10px 0; border: 1px solid #ddd; }
+.gvreviews .gvreview span.date { float: right; font-size: 11px; color: #999; }
+.gvreviews .gvreview .gv_hd { padding: 5px; }
+.gvreviews .gvreview .gv_hd h4.review_title { font-size: 14px; line-height: 1.7em; margin: 0; color: #333;}
+.gvreviews .gvreview .gv_hd .byline { font-size: 11px; color: #999; font-weight: normal; }
+.gvreviews .gvreview .gv_bd { margin: 10px; padding: 10px; font-size: 12px; color: #666; border-top: 1px solid #ddd;}
+.gvreviews .gvreview .gv_ft { padding: 5px; background: #D8DCE0; border-top: #99f; }
+
+.gvreviews .gvreview .gv_reply { padding:10px; background: #f0f0f0; }
+.gv_reply span.heading  { font-weight: bold; }
+ 
+.gvreviews .gvreview #gv_pages { text-align: center; padding: 5px; }
+
+/* overlay */
+.gvoverlay { z-index: 100; left: 0; top: 0; width: 100%; height: 100%; background: url({{'alpha_fff_50.png'|asset_url}}) top left repeat; display:block; position: absolute;}
+.gvspinner { z-index: 101; width: 100%; height: 100%; background: url({{'spinner32.gif'|asset_url}}) center center no-repeat; }
+
+/* 
+ * misc global 
+ *
+ */
+
+
+
+/* jQuery.Rating Plugin CSS - http://www.fyneworks.com/jquery/star-rating/ */
+div.rating-cancel,div.star-rating{float:left;width:17px;height:15px;text-indent:-999em;cursor:pointer;display:block;background:transparent;overflow:hidden}
+div.rating-cancel,div.rating-cancel a{background: no-repeat 0 -16px; width: 1px;}
+div.star-rating,div.star-rating a{background:url({{'stars.png'|asset_url}}) no-repeat 0 0px}
+div.rating-cancel a,div.star-rating a{display:block;width:16px;height:100%;background-position:0 0px;border:0}
+div.star-rating-on a{background-position:0 -16px!important}
+div.star-rating-hover a{background-position:0 -32px}
+/* Read Only CSS */
+div.star-rating-readonly a{cursor:default !important}
+/* Partial Star CSS */
+div.star-rating{background:transparent!important;overflow:hidden!important}
+/* END jQuery.Rating Plugin CSS */

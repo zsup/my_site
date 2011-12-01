@@ -12,6 +12,11 @@
 
 {{ 'styles.css' | asset_url | stylesheet_tag }}
 {{ 'nivo-slider.css' | asset_url | stylesheet_tag }}
+{{ 'gv.css' | asset_url | stylesheet_tag}}
+
+<!-- Grapevine -->
+{{ 'http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js' | script_tag }}
+{{ "http://grapevinereviews.com/assets/gv.js" | script_tag }} 
 
 {% if settings.heading_font != '' and settings.heading_font != 'Arial' and settings.heading_font != 'Georgia' %}
 <link href='https://fonts.googleapis.com/css?family={{ settings.heading_font | replace: ' ', '+' }}&amp;v2' rel='stylesheet' type='text/css' />
