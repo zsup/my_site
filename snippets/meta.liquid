@@ -1,0 +1,17 @@
+{% assign maxwords = 30 %}
+{% if template contains 'product' %}
+  <title>{{ product.title }} by {{ product.vendor }} | {{ shop.name }}</title>
+  <meta name="description" content="{{ product.description | strip_html | strip_newlines | truncatewords: maxwords | escape }}" />
+{% elsif template contains 'page' %}
+  <title>{{ page_title }} | {{ shop.name }}</title>
+  <meta name="description" content="{{ page.content | strip_html | strip_newlines | truncatewords: maxwords | escape }}" />
+{% elsif template == 'index' %}{% if settings.shop_tagline != '' %}
+  <title>{{ shop.name }}: {{ settings.shop_tagline }}</title>{% else %}
+  <title>{{ shop.name }}</title>{% endif %}{% if settings.shop_description != '' %}
+  <meta name="description" content="{{ settings.shop_description | escape }}" />{% endif %}
+{% else %}
+  <title>{{ page_title }} | {{ shop.name }}</title>
+{% endif %}
+{% if template contains 'product' and collection %}
+<link rel="canonical" href="{{ shop.url }}{{ product.url }}" />
+{% endif %}
